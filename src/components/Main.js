@@ -1,6 +1,8 @@
 import React from 'react';
 import { withAlert } from "react-alert";
 
+/*jshint -W065 */
+
 const styles = {
   forms: {
     textAlign: 'center'
@@ -23,11 +25,11 @@ const messages = {
   haveAssignments: "Did you have assignments?",
   amountAssignments: "How many assignments did you have?",
   valueAssignments: "How much did you get on assignment ",
-  valueAssignments2: " and how much was it worth?",
+  valueAssignments2: " and how much was it worth out of 100%?",
   haveMidterms: "Did you have midterms?",
   amountMidterms: "How many midterms did u have?",
   valueMidterms: "How much did you get on midterm ",
-  valueMidterms2: " and how much was it worth?",
+  valueMidterms2: " and how much was it worth out of 100%?",
   good: "You already have over 50%! Great Job!",
   worthFinal: "How much is your final exam or project worth?"
 }
@@ -51,8 +53,8 @@ class Main extends React.Component {
       start: 1,
       end: 0,
       // Holders
-      total: 0,
-      totalworth: 0,
+      total: 0, //% value
+      totalworth: 0, //raw value
     };
     this.handleYes = this.handleYes.bind(this);
     this.handleNo = this.handleNo.bind(this);
@@ -106,11 +108,20 @@ class Main extends React.Component {
   }
 
   addOnState() {
-    const item = parseInt(this.state.inputvalue);
+    const item = Number(this.state.inputvalue);
     const state = this.state.currentState;
+    console.log(item + "--- on state ----" + state);
     if (state === 1) {
       //how many assignments
-      if (item <= 12) {
+      if (item <= 0) {
+        console.log("This");
+        this.setState({
+          currentState: (this.state.currentState < 10) ? 10 : 20,
+          start: 1,
+          end: 0
+        });
+      } else if (item <= 12) {
+        console.log("That");
         this.setState({
           end: item,
           currentState: this.state.currentState + 1
@@ -120,8 +131,8 @@ class Main extends React.Component {
       } else {
         this.props.alert.show('A number please')
       }
-    } else if (state === 2 || state == 12) {
-      const worth = parseInt(this.state.worthvalue);
+    } else if (state === 2 || state === 12) {
+      const worth = Number(this.state.worthvalue);
       if (item > 100 || worth > 100) {
         this.props.alert.show('impossible');
       } else if (isNaN(item) || isNaN(worth)) {
@@ -131,7 +142,7 @@ class Main extends React.Component {
         const currentItem = this.state.start;
         this.setState({
           total: this.state.total + item * (worth / 100),
-          totalworth: parseInt(this.state.totalworth) + worth,
+          totalworth: Number(this.state.totalworth) + worth,
           start: this.state.start + 1
         });
         if (currentItem >= this.state.end) {
@@ -144,7 +155,13 @@ class Main extends React.Component {
       }
     } else if (state === 11) {
       //how many assignments
-      if (item <= 5) {
+      if (item <= 0) {
+        this.setState({
+          currentState: (this.state.currentState < 10) ? 10 : 20,
+          start: 1,
+          end: 0
+        });
+      } else if (item <= 5) {
         console.log("THIES");
         this.setState({
           end: item,
@@ -161,7 +178,7 @@ class Main extends React.Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
 
     let show;
 
@@ -241,10 +258,13 @@ class Main extends React.Component {
           </div>
         );
       } else {
+
         const rest = this.state.totalworth;
         const totalGrade = this.state.total;
-        const need50 = (50 - totalGrade) / (100/rest);
-        const need60 = (60 - totalGrade) / (100/rest);
+
+        const need50 = Math.round(((50 - totalGrade) * 100) / (100 -rest));
+        const need60 = Math.round(((60 - totalGrade) * 100) / (100 -rest));
+        console.log("rest: "+ rest + ", totalGrade" + totalGrade);
 
         show = (
           <div>
