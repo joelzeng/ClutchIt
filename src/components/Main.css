@@ -1,0 +1,141 @@
+.button-yes, .button-next{
+  background-color: #51c933;
+  border: none;
+  color: #FFFFFF;
+}
+
+.button-no {
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+}
+
+.button-reset {
+  background-color: #1787d9;
+  border: none;
+  color: #FFFFFF;
+}
+
+.button-yes, .button-no, .button-next {
+  display: inline-block;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 28px;
+  padding: 15px;
+  width: 175px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 20px;
+}
+
+
+/*-------------------*/
+
+
+.button-reset {
+  display: inline-block;
+  position: initial;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 220px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.button-reset:hover {
+  opacity: 0.7;
+}
+/*-------------------*/
+
+.button-no span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button-no span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+.button-no:hover span {
+  padding-right: 25px;
+}
+
+.button-no:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/*-------------------*/
+
+.button-yes span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button-yes span:after {
+  content: '\003e';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+.button-yes:hover span {
+  padding-right: 25px;
+}
+
+.button-yes:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/*-------------------*/
+
+.button-next:hover {
+  opacity: 0.7;
+}
+
+/*-------------------*/
+
+select {
+  padding: 10px;
+  margin: 10px 30px;
+
+  font-size: 30px;
+  text-align: center;
+  width: 160px;
+}
+
+/*-------------------*/
+
+label {
+  padding: 10px;
+  margin: 10px 20px;
+
+  margin-right: 25px;
+  margin-left: 60px;
+
+  font-size: 30px;
+  text-align: left;
+
+  color: white;
+}
+
+/*-------------------*/
+
+h1 {
+  color : white;
+}
+
+/*-------------------*/

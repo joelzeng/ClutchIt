@@ -1,23 +1,20 @@
 import React from 'react';
 import { withAlert } from "react-alert";
+import './Main.css';
+import Bar from './Bar.js';
 
 /*jshint -W065 */
 
 const styles = {
-  forms: {
+  div_center: {
     textAlign: 'center'
   },
-  centerButton: {
-    align: 'center'
-  },
   h1_style: {
-    color: 'white',
-    textAlign : 'center',
-    padding: 0,
+    marginTop: '50px'
   },
-  buttons: {
-    align: 'center'
-  },
+  yesnos: {
+    margin: '200px 100px'
+  }
 }
 
 
@@ -41,8 +38,8 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state =  {
-      inputvalue: '',
-      worthvalue: '',
+      inputvalue: '0',
+      worthvalue: '0',
       /*
       0 - Start /Do you have assignements?
       0.1 - how many assignment?
@@ -182,78 +179,89 @@ class Main extends React.Component {
 
     let show;
 
-    if (this.state.currentState === 0) {
+    if (this.state.currentState === 0 || this.state.currentState === 10) {
+      let msg;
+      if (this.state.currentState === 0){
+        msg = <h1>{messages.haveAssignments}</h1>
+      } else {
+        msg = <h1>{messages.haveMidterms}</h1>
+      }
       show = (
-        <div>
-          <h1>{messages.haveAssignments}</h1>
-          <button onClick={this.handleYes}>Yes</button>
-          <button onClick={this.handleNo}>No</button>
+        <div >
+          {msg}
+          <button className="button-yes" onClick={this.handleYes}><span>Yes</span></button>
+          <button className="button-no"onClick={this.handleNo}><span>No</span></button>
         </div>
       );
-    } else if (this.state.currentState === 1){
+    } else if (this.state.currentState === 1 || this.state.currentState === 11){
+      let msg;
+      if (this.state.currentState === 1){
+        msg = <h1>{messages.amountAssignments}</h1>
+      } else if (this.state.currentState === 11) {
+        msg = <h1>{messages.amountMidterms}</h1>
+      }
+
+      let options = [];
+      let len;
+      if (this.state.currentState === 1) {
+        len = 12;
+      } else {
+        len = 5;
+      }
+      for(let i = 0; i <= len; i++){
+        options.push(i);
+      }
+      console.log(options);
       show = (
         <div>
-          <h1>{messages.amountAssignments}</h1>
+          {msg}
           <form onSubmit={this.handleSubmit}>
-            <input type="text" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}/>
+            <select className="selectTag" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
+              {options.map(p => <option value={p} key={p+"ass"}>{p}</option>)}
+            </select>
             <br/>
-            <input type="submit" value="Next"/>
+            <input className="button-next" type="submit" value="Next"/>
           </form>
         </div>
       );
-    } else if (this.state.currentState === 2 ){
+    } else if (this.state.currentState === 2 || this.state.currentState === 12 ){
+      let msg;
+      if (this.state.currentState === 2){
+        msg = <h1>{messages.valueAssignments}{this.state.start}{messages.valueAssignments2}</h1>
+      } else if (this.state.currentState === 12) {
+        msg = <h1>{messages.valueMidterms}{this.state.start}{messages.valueMidterms2}</h1>
+      }
+
+      let options = [];
+      let options2 = [];
+      for(let i = 0; i <= 100; i++){
+        options.push(i);
+      }
+      for(let i = 0; i <= 50; i++){
+        options2.push(i);
+      }
       show = (
         <div>
-          <h1>{messages.valueAssignments}{this.state.start}{messages.valueAssignments2}</h1>
+          {msg}
           <form onSubmit={this.handleSubmit}>
-            <label className="label">Grade</label>
-            <label className="label">Percentage</label>
+            <label style={styles.grades}>Grade</label>
+            <label style={styles.percentage}>Percentage</label>
             <br/>
-            <input type="text" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}/>
-            <input type="text" name="worthvalue" value={this.state.worthvalue} onChange={this.handleChange}/>
+            <select className="selectTag" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
+              {options.map(p => <option value={p} key={p+"assG"}>{p}</option>)}
+            </select>
+            <select className="selectTag" name="worthvalue" value={this.state.worthvalue} onChange={this.handleChange}>
+              {options2.map(p => <option value={p} key={p+"assW"}>{p}</option>)}
+            </select>
             <br/>
-            <input type="submit" value="Next"/>
-          </form>
-        </div>
-      );
-    } else if (this.state.currentState === 10 ){
-      show = (
-        <div>
-          <h1>{messages.haveMidterms}</h1>
-          <button onClick={this.handleYes}>Yes</button>
-          <button onClick={this.handleNo}>No</button>
-        </div>
-      );
-    } else if (this.state.currentState === 11){
-      show = (
-        <div>
-          <h1>{messages.amountMidterms}</h1>
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}/>
-            <br/>
-            <input type="submit" value="Next"/>
-          </form>
-        </div>
-      );
-    } else if (this.state.currentState === 12 ){
-      show = (
-        <div>
-          <h1>{messages.valueMidterms}{this.state.start}{messages.valueMidterms2}</h1>
-          <form onSubmit={this.handleSubmit}>
-            <label className="label">Grade</label>
-            <label className="label">Percentage</label>
-            <br/>
-            <input type="text" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}/>
-            <input type="text" name="worthvalue" value={this.state.worthvalue} onChange={this.handleChange}/>
-            <br/>
-            <input type="submit" value="Next"/>
+            <input className="button-next" type="submit" value="Next"/>
           </form>
         </div>
       );
     } else {
       if (this.state.total > 50) {
         show = (
-          <div>
+          <div >
             <h1>{messages.good}</h1>
           </div>
         );
@@ -276,10 +284,10 @@ class Main extends React.Component {
     }
 
     return (
-      <div >
+      <div style={styles.div_center}>
         {show}
-        <button onClick={this.handleReset}>Start again</button>
-        <h1>{this.state.total}</h1>
+        <Bar percentage={this.state.total}/>
+        <button className="button-reset" onClick={this.handleReset}><span>Start again</span></button>
       </div>
     );
   }

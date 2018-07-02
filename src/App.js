@@ -10,7 +10,7 @@ const styles = {
     height: '50px',
     width: '600px',
     margin: 'auto',
-    marginTop: '17%',
+    marginTop: '5%',
   },
   h1_style: {
     color: 'white',
