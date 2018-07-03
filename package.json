@@ -17,6 +17,7 @@
   "devDependencies": {
     "react-alert": "^4.0.4",
     "react-alert-template-basic": "^1.0.0",
+    "react-reveal": "^1.2.2",
     "react-select": "^1.2.1",
     "react-transition-group": "^2.4.0"
   }

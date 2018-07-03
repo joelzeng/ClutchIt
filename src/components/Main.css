@@ -139,3 +139,23 @@ h1 {
 }
 
 /*-------------------*/
+
+.yesno {
+  margin: 85px;
+  margin-bottom: 152px;
+}
+
+.amount {
+  margin-top: 85px;
+  margin-bottom:71px;
+}
+
+.goodfinal {
+  margin-top: 90px;
+  margin-bottom: 271px;
+}
+
+.final {
+  margin-top: 90px;
+  margin-bottom: 186px;
+}

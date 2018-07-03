@@ -33,7 +33,7 @@ class Bar extends React.Component {
 
     return(
       <div style={style}>
-        <p>You have {this.props.percentage}%</p>
+        <p>You have {Math.round(this.props.percentage)}%</p>
         <div className="bar">
           {show}
         </div>

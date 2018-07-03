@@ -2,6 +2,8 @@ import React from 'react';
 import { withAlert } from "react-alert";
 import './Main.css';
 import Bar from './Bar.js';
+import Fade from 'react-reveal/Fade';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 /*jshint -W065 */
 
@@ -40,6 +42,7 @@ class Main extends React.Component {
     this.state =  {
       inputvalue: '0',
       worthvalue: '0',
+      view: true,
       /*
       0 - Start /Do you have assignements?
       0.1 - how many assignment?
@@ -63,13 +66,15 @@ class Main extends React.Component {
 
   handleYes(e) {
     this.setState({
-      currentState: this.state.currentState + 1
+      currentState: this.state.currentState + 1,
+      view: !this.state.view
     });
   }
 
   handleNo(e) {
     this.setState({
-      currentState: this.state.currentState + 10
+      currentState: this.state.currentState + 10,
+      // view: !this.state.view
     });
   }
 
@@ -79,7 +84,8 @@ class Main extends React.Component {
       start: 1,
       end: 0,
       total: 0,
-      totalworth: 0
+      totalworth: 0,
+      view: true
     });
   }
 
@@ -175,8 +181,7 @@ class Main extends React.Component {
   }
 
   render() {
-    // console.log(this.state);
-
+    // console.log(this.state)
     let show;
 
     if (this.state.currentState === 0 || this.state.currentState === 10) {
@@ -187,11 +192,11 @@ class Main extends React.Component {
         msg = <h1>{messages.haveMidterms}</h1>
       }
       show = (
-        <div >
-          {msg}
-          <button className="button-yes" onClick={this.handleYes}><span>Yes</span></button>
-          <button className="button-no"onClick={this.handleNo}><span>No</span></button>
-        </div>
+          <div className="yesno">
+            {msg}
+            <button className="button-yes" onClick={this.handleYes}><span>Yes</span></button>
+            <button className="button-no"onClick={this.handleNo}><span>No</span></button>
+          </div>
       );
     } else if (this.state.currentState === 1 || this.state.currentState === 11){
       let msg;
@@ -211,19 +216,38 @@ class Main extends React.Component {
       for(let i = 0; i <= len; i++){
         options.push(i);
       }
-      console.log(options);
-      show = (
-        <div>
-          {msg}
-          <form onSubmit={this.handleSubmit}>
-            <select className="selectTag" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
-              {options.map(p => <option value={p} key={p+"ass"}>{p}</option>)}
-            </select>
-            <br/>
-            <input className="button-next" type="submit" value="Next"/>
-          </form>
-        </div>
-      );
+      // console.log(options);
+      if (this.state.currentState === 1) {
+        show = (
+          <Fade enter={false}>
+            <div className="amount">
+              {msg}
+              <form onSubmit={this.handleSubmit}>
+                <select name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
+                  {options.map(p => <option value={p} key={p+"ass"}>{p}</option>)}
+                </select>
+                <br/>
+                <input className="button-next" type="submit" value="Next"/>
+              </form>
+            </div>
+          </Fade>
+        );
+      } else {
+        show = (
+          <Fade enter={true}>
+            <div className="amount">
+              {msg}
+              <form onSubmit={this.handleSubmit}>
+                <select name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
+                  {options.map(p => <option value={p} key={p+"ass"}>{p}</option>)}
+                </select>
+                <br/>
+                <input className="button-next" type="submit" value="Next"/>
+              </form>
+            </div>
+          </Fade>
+        );
+      }
     } else if (this.state.currentState === 2 || this.state.currentState === 12 ){
       let msg;
       if (this.state.currentState === 2){
@@ -241,29 +265,33 @@ class Main extends React.Component {
         options2.push(i);
       }
       show = (
-        <div>
-          {msg}
-          <form onSubmit={this.handleSubmit}>
-            <label style={styles.grades}>Grade</label>
-            <label style={styles.percentage}>Percentage</label>
-            <br/>
-            <select className="selectTag" name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
-              {options.map(p => <option value={p} key={p+"assG"}>{p}</option>)}
-            </select>
-            <select className="selectTag" name="worthvalue" value={this.state.worthvalue} onChange={this.handleChange}>
-              {options2.map(p => <option value={p} key={p+"assW"}>{p}</option>)}
-            </select>
-            <br/>
-            <input className="button-next" type="submit" value="Next"/>
-          </form>
-        </div>
+        <Fade enter={false}>
+          <div>
+            {msg}
+            <form onSubmit={this.handleSubmit}>
+              <label style={styles.grades}>Grade</label>
+              <label style={styles.percentage}>Percentage</label>
+              <br/>
+              <select name="inputvalue" value={this.state.inputvalue} onChange={this.handleChange}>
+                {options.map(p => <option value={p} key={p+"assG"}>{p}</option>)}
+              </select>
+              <select name="worthvalue" value={this.state.worthvalue} onChange={this.handleChange}>
+                {options2.map(p => <option value={p} key={p+"assW"}>{p}</option>)}
+              </select>
+              <br/>
+              <input className="button-next" type="submit" value="Next"/>
+            </form>
+          </div>
+        </Fade>
       );
     } else {
       if (this.state.total > 50) {
         show = (
-          <div >
-            <h1>{messages.good}</h1>
-          </div>
+          <Fade enter={false}>
+            <div className="goodfinal">
+              <h1>{messages.good}</h1>
+            </div>
+          </Fade>
         );
       } else {
 
@@ -275,17 +303,23 @@ class Main extends React.Component {
         console.log("rest: "+ rest + ", totalGrade" + totalGrade);
 
         show = (
-          <div>
-            <h1>Your final is worth {100 - rest} right?</h1>
-            <h1>You need {need50}% in your final to get a 50! and {need60}% in your final to reach a 60!</h1>
-          </div>
+          <Fade enter={false}>
+            <div className="final">
+              <h1>Your final is worth {100 - rest} right?</h1>
+              <h1>You need {need50}% in your final to get a 50! and {need60}% in your final to reach a 60!</h1>
+            </div>
+          </Fade>
         );
       }
     }
 
     return (
       <div style={styles.div_center}>
-        {show}
+        <TransitionGroup>
+          <Fade enter={true}>
+            {show}
+          </Fade>
+        </TransitionGroup>
         <Bar percentage={this.state.total}/>
         <button className="button-reset" onClick={this.handleReset}><span>Start again</span></button>
       </div>

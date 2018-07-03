@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import Main from './components/Main';
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
-
+import Fade from 'react-reveal/Fade';
 
 const styles = {
   center_style: {
@@ -36,9 +36,13 @@ class App extends Component {
         <Helmet>
             <style>{'body { background-color:#0099ff }'}</style>
         </Helmet>
-        <h1 style={styles.h1_style}>Clutch it</h1>
+        <Fade top>
+          <h1 style={styles.h1_style}>Clutch it</h1>
+        </Fade>
         <AlertProvider template={AlertTemplate} {...options}>
+        <Fade>
           <Main />
+        </Fade>
         </AlertProvider>
       </div>
     );
